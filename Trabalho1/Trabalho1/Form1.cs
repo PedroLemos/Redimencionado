@@ -44,86 +44,191 @@ namespace Trabalho1
             listViewDados.Items.Remove(item);
         }
 
+        private void Limpar()
+        {
+            textBoxCadFilme.Text = "";
+            comboBoxCadGenero.SelectedIndex = -1;
+            textBoxCadLocal.Text = "";
+            dateTimePickerCadData.Value = DateTime.Now;
+        }
+
+        private void TirarLabel()
+        {
+            labelCadData.Visible = false;
+            labelCadGenero.Visible = false;
+            labelCadLocal.Visible = false;
+            labelCadNome.Visible = false;
+        }
+
+        private void Editar()
+        {
+            buttonCancelar.Visible = true;
+            buttonSalvar.Visible = true;
+            buttonEditar.Visible = false;
+            buttonRemover.Visible = false;
+            buttonCadCadastrar.Visible = false;
+
+            //Carrega os itens nos campos
+            if (listViewDados.SelectedItems.Count != 0)
+            {
+                textBoxCadFilme.Text = listViewDados.SelectedItems[0].SubItems[0].Text;
+                comboBoxCadGenero.Text = listViewDados.SelectedItems[0].SubItems[1].Text;
+                textBoxCadLocal.Text = listViewDados.SelectedItems[0].SubItems[2].Text;
+                dateTimePickerCadData.Text = listViewDados.SelectedItems[0].SubItems[3].Text;
+            }
+        }
+
+
         private void checkBoxBuscaNome_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxBuscaNome.Checked == true)
-            {
-                textBoxBuscaNome.Enabled = true;
-            }
-            else
-            {
-                textBoxBuscaNome.Enabled = false;
-            }
+            textBoxBuscaNome.Enabled = checkBoxBuscaNome.Checked;
         }
 
         private void checkBoxBuscaGenero_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxBuscaGenero.Checked == true)
-            {
-                comboBoxBuscaGenero.Enabled = true;
-            }
-            else
-            {
-                comboBoxBuscaGenero.Enabled = false;
-            }
+            comboBoxBuscaGenero.Enabled = checkBoxBuscaGenero.Checked;
         }
 
         private void checkBoxBuscaLocal_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxBuscaLocal.Checked == true)
-            {
-                textBoxBuscaLocal.Enabled = true;
-            }
-            else
-            {
-                textBoxBuscaLocal.Enabled = false;
-            }
+            textBoxBuscaLocal.Enabled = checkBoxBuscaLocal.Checked;
         }
 
         private void checkBoxBuscaData_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxBuscaData.Checked == true)
-            {
-                dateTimePickerBuscaData1.Enabled = true;
-                dateTimePickerBuscaData2.Enabled = true;
-            }
-            else
-            {
-                dateTimePickerBuscaData1.Enabled = false;
-                dateTimePickerBuscaData2.Enabled = false;
-            }
-        }
-
-        private void tabPageBusca_Click(object sender, EventArgs e)
-        {
-
+            dateTimePickerBuscaData1.Enabled = checkBoxBuscaData.Checked;
+            dateTimePickerBuscaData2.Enabled = checkBoxBuscaData.Checked;
         }
 
         private void buttonCadCadastrar_Click(object sender, EventArgs e)
         {
-            ListViewItem item = new ListViewItem();
+            if (textBoxCadFilme.Text.Trim() == "")
+            {
+                labelCadLocal.Visible = false;
+                labelCadGenero.Visible = false;
+                labelCadNome.Text = "*Campo Nome invalido.";
+                labelCadNome.Visible = true;
+                textBoxCadFilme.Focus();
+            }
 
-            item = new ListViewItem(textBoxCadFilme.Text);
-        
-            ListViewItem.ListViewSubItem subitem = new ListViewItem.ListViewSubItem();
+            else if (comboBoxCadGenero.SelectedIndex == -1)
+            {
+                labelCadNome.Visible = false;
+                labelCadLocal.Visible = false;
+                labelCadGenero.Text = "Genero não selecionado.";
+                labelCadGenero.Visible = true;
+                comboBoxCadGenero.Focus();
+            }
 
-            subitem = new ListViewItem.ListViewSubItem(item, comboBoxCadGenero.SelectedItem.ToString());
-            item.SubItems.Add(subitem);
+            else if (textBoxCadLocal.Text.Trim() == "")
+            {
+                labelCadNome.Visible = false;
+                labelCadGenero.Visible = false;
+                labelCadLocal.Text = "*Campo local invalido.";
+                labelCadLocal.Visible = true;
+                textBoxCadLocal.Focus();
+            }
 
-            subitem = new ListViewItem.ListViewSubItem(item, textBoxCadLocal.Text);
-            item.SubItems.Add(subitem);
+            else
+            {
+                ListViewItem item = new ListViewItem();
 
-            subitem = new ListViewItem.ListViewSubItem(item, dateTimePickerCadData.Text);
-            item.SubItems.Add(subitem);
+                item = new ListViewItem(textBoxCadFilme.Text);
 
-            listViewDados.Items.Add(item);
+                ListViewItem.ListViewSubItem subitem = new ListViewItem.ListViewSubItem();
+
+                subitem = new ListViewItem.ListViewSubItem(item, comboBoxCadGenero.SelectedItem.ToString());
+                item.SubItems.Add(subitem);
+
+                subitem = new ListViewItem.ListViewSubItem(item, textBoxCadLocal.Text);
+                item.SubItems.Add(subitem);
+
+                subitem = new ListViewItem.ListViewSubItem(item, dateTimePickerCadData.Text);
+                item.SubItems.Add(subitem);
+
+                listViewDados.Items.Add(item);
+                Limpar();
+                TirarLabel();
+            }
         }
+
+        private void buttonSalvar_Click(object sender, EventArgs e)
+        {
+            if (textBoxCadFilme.Text.Trim() == "")
+            {
+                labelCadLocal.Visible = false;
+                labelCadGenero.Visible = false;
+                labelCadNome.Text = "*Campo Nome invalido.";
+                labelCadNome.Visible = true;
+                textBoxCadFilme.Focus();
+            }
+
+            else if (comboBoxCadGenero.SelectedIndex == -1)
+            {
+                labelCadNome.Visible = false;
+                labelCadLocal.Visible = false;
+                labelCadGenero.Text = "Genero não selecionado.";
+                labelCadGenero.Visible = true;
+                comboBoxCadGenero.Focus();
+            }
+
+            else if (textBoxCadLocal.Text.Trim() == "")
+            {
+                labelCadNome.Visible = false;
+                labelCadGenero.Visible = false;
+                labelCadLocal.Text = "*Campo local invalido.";
+                labelCadLocal.Visible = true;
+                textBoxCadLocal.Focus();
+            }
+
+            else
+            {
+                listViewDados.SelectedItems[0].SubItems[0].Text = textBoxCadFilme.Text;
+                listViewDados.SelectedItems[0].SubItems[1].Text = comboBoxCadGenero.Text;
+                listViewDados.SelectedItems[0].SubItems[2].Text = textBoxCadLocal.Text;
+                listViewDados.SelectedItems[0].SubItems[3].Text = dateTimePickerCadData.Text;
+            }
+            buttonCancelar.Visible = false;
+            buttonSalvar.Visible = false;
+            buttonEditar.Visible = true;
+            buttonRemover.Visible = true;
+            buttonCadCadastrar.Visible = true;
+            Limpar();
+            TirarLabel();
+        }
+
 
         private void buttonRemover_Click(object sender, EventArgs e)
         {
-            Remover();
+            if (MessageBox.Show("Desejar realmente excluir esse cadastro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                Remover();
         }
 
+        private void buttonEditar_Click(object sender, EventArgs e)
+        {
+            TirarLabel();
+            Editar();
+        }
 
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            buttonCancelar.Visible = false;
+            buttonSalvar.Visible = false;
+            buttonEditar.Visible = true;
+            buttonRemover.Visible = true;
+            buttonCadCadastrar.Visible = true;
+            Limpar();
+            TirarLabel();
+        }
+
+        private void listViewDados_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewDados.SelectedIndices != null)
+            {
+                buttonEditar.Enabled = true;
+            }
+            else
+                buttonEditar.Enabled = false;
+        }
     }
 }
